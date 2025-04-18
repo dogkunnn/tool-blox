@@ -1,0 +1,47 @@
+local player = game.Players.LocalPlayer
+local runService = game:GetService("RunService")
+
+-- UI
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.ResetOnSpawn = false
+
+local label = Instance.new("TextLabel", gui)
+label.Size = UDim2.new(0, 350, 0, 30)
+label.Position = UDim2.new(0, 10, 0, 10)
+label.BackgroundTransparency = 0.3
+label.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+label.TextColor3 = Color3.new(1, 1, 1)
+label.Font = Enum.Font.Code
+label.TextSize = 18
+label.Text = "Vector3: Loading..."
+
+local button = Instance.new("TextButton", gui)
+button.Size = UDim2.new(0, 120, 0, 30)
+button.Position = UDim2.new(0, 10, 0, 50)
+button.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.Font = Enum.Font.Code
+button.TextSize = 16
+button.Text = "Copy Vector3"
+
+-- อัปเดตตำแหน่ง
+runService.RenderStepped:Connect(function()
+	local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if hrp then
+		local pos = hrp.Position
+		label.Text = ("Vector3.new(%.2f, %.2f, %.2f)"):format(pos.X, pos.Y, pos.Z)
+	end
+end)
+
+-- คัดลอกเมื่อกดปุ่ม
+button.MouseButton1Click:Connect(function()
+	local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if hrp and setclipboard then
+		local pos = hrp.Position
+		local str = ("Vector3.new(%.2f, %.2f, %.2f)"):format(pos.X, pos.Y, pos.Z)
+		setclipboard(str)
+		button.Text = "Copied!"
+		wait(1.5)
+		button.Text = "Copy Vector3"
+	end
+end)
