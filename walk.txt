@@ -1,0 +1,14 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+local targetPosition = Vector3.new(2724.79, 9.12, 1647.23)
+local distanceThreshold = 3
+
+while (HumanoidRootPart.Position - targetPosition).Magnitude > distanceThreshold do
+    Humanoid:MoveTo(targetPosition)
+    Humanoid.MoveToFinished:Wait()
+    task.wait(0.2)
+end
